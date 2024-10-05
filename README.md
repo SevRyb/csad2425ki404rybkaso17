@@ -20,5 +20,8 @@ Main goals to this task is to create repository with main branch **develop**. Th
 - **Qt Framework**: Used for creating desktop application with graphical user interface (GUI) that displays the game board and allows user to view the game progress in real time.
 - **Platformio**: This multiple framework tool used for developing firmware for ESP8266 microcontroller. The code is written in C/C++.
 
+### Programming Languages
+- **C/C++**: Used for developing firmware and desktop application.
+
 ### Communication
 - **Serial Communication**: The microcontroller will communicate with desktop client app through an UART interface to send game status and receive user input.
