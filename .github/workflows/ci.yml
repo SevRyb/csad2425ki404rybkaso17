@@ -1,4 +1,4 @@
-name: CI Qt CMake (MSVC 2019) and PlatformIO
+name: CI Qt CMake (Windows) and PlatformIO
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  # Job for building the C++ Qt 5 client project on Windows using MSVC 2019 x64
+  # Job for building the C++ Qt 5 client project on Windows
   client-build-windows:
     runs-on: windows-latest
 
@@ -29,17 +29,22 @@ jobs:
           choco install qt5-default
           echo "Qt 5 installed"
 
-      # Step 4: Configure project using CMake with MSVC 2019 x64
+      # Step 4: Create build directory
+      - name: Create build directory
+        run: mkdir build
+        working-directory: client
+
+      # Step 5: Configure project using CMake
       - name: Configure with CMake
-        run: cmake -G "Visual Studio 16 2019" -A x64 ..
+        run: cmake -G "MinGW Makefiles" ..
         working-directory: client/build
 
-      # Step 5: Build the project using MSVC
+      # Step 6: Build the project
       - name: Build client app
-        run: cmake --build . --config Release
+        run: cmake --build .
         working-directory: client/build
 
-      # Step 6: Upload client build artifacts
+      # Step 7: Upload client build artifacts
       - name: Upload Client build artifact
         uses: actions/upload-artifact@v4
         with:
