@@ -2,12 +2,6 @@ cmake_minimum_required(VERSION 3.16)
 
 project(sw-client VERSION 0.1 LANGUAGES CXX)
 
-# Set path to our custom CMAKE scripts
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
-
-# Include Qt deployment helper function
-include(windeployqt)
-
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -79,5 +73,3 @@ install(TARGETS sw-client
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(sw-client)
 endif()
-
-windeployqt(sw-client)
