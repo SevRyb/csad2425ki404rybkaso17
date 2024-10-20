@@ -1,6 +1,5 @@
 
 #include <QDebug>
-#include <QMessageBox>
 
 #include "GameHost.h"
 
@@ -15,12 +14,12 @@ GameHost::GameHost(QObject *parent)
         m_serialPort.open(QIODevice::ReadWrite);
         if (!m_serialPort.isOpen())
         {
-            QMessageBox::critical(NULL, "Error", QString("Couldn't open %1").arg(m_serialPort.portName()));
+            qDebug() << QString("Couldn't open %1").arg(m_serialPort.portName());
         }
     }
     else
     {
-        QMessageBox::critical(NULL, "Error", "Host device not found!");
+        qDebug() << "Host device not found!";
     }
 
     connect(&m_serialPort, &QSerialPort::readyRead, this, &GameHost::onReadyRead);
