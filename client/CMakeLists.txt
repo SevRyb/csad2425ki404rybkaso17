@@ -59,10 +59,10 @@ else()
     endif()
 endif()
 
-target_link_libraries(sw-client PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::SerialPort)
+target_link_libraries(sw-client PUBLIC Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(${PROJECT_NAME} PUBLIC Qt${QT_VERSION_MAJOR}::SerialPort)
 
-# target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Test)
+# target_link_libraries(${PROJECT_NAME} PUBLIC Qt${QT_VERSION_MAJOR}::Test)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
@@ -114,7 +114,7 @@ target_sources(${TEST_TARGET} PRIVATE
 )
 
 # Link the Qt5::Test library to the test executable
-target_link_libraries(${TEST_TARGET} Qt5::Test Qt5::Core Qt5::Widgets Qt5::SerialPort)
+target_link_libraries(${TEST_TARGET} PUBLIC Qt5::Test Qt5::Core Qt5::Widgets Qt5::SerialPort)
 
 # Enable testing
 enable_testing()

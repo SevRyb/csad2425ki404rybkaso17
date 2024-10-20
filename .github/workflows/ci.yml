@@ -29,6 +29,10 @@ jobs:
           choco install qt5-default
           echo "Qt 5 installed"
 
+      # Step 3a: Add Qt to PATH
+      - name: Add Qt to PATH
+        run: $env:Path += ";C:\Qt\5.15.2\mingw81_64\bin"
+
       # Step 4: Create build directory
       - name: Create build directory
         run: mkdir build
@@ -45,9 +49,9 @@ jobs:
         working-directory: client/build
 
       # Step 7: Run test
-      # - name: Run test
-      #   run: ./sw-client-tester.exe
-      #   working-directory: client/build
+      - name: Run test
+        run: ./sw-client-tester.exe
+        working-directory: client/build
 
       # Step 8: Upload client build artifacts
       - name: Upload Client build artifact
