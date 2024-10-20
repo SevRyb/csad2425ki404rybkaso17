@@ -54,7 +54,7 @@ jobs:
       # Step 8: Use windeployqt to gather Qt DLLs for MinGW
       - name: Deploy Qt DLLs using windeployqt (MinGW)
         run: |
-          C:\Qt\5.15.2\mingw81_64\bin\windeployqt.exe --release --compiler-runtime client/build/my_client.exe
+          C:\Qt\5.15.2\mingw81_64\bin\windeployqt.exe --release --compiler-runtime client/build/sw-client.exe
         shell: cmd
         working-directory: client/build
 
