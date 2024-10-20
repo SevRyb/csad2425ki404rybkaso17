@@ -63,7 +63,7 @@ void GameHost::onReadyRead()
     {
         if (jsonDoc.isObject())
         {
-            parseJson(jsonDoc.object());
+            emit sigMessageRecv(parseJson(jsonDoc.object()));
         }
         else
         {
@@ -74,15 +74,15 @@ void GameHost::onReadyRead()
     {
         qDebug() << "[ERROR] Invalid message";
     }
-
 }
 
-void GameHost::parseJson(const QJsonObject &jsonObj)
+QString GameHost::parseJson(const QJsonObject &jsonObj)
 {
     const QJsonValue msgValue = jsonObj.value("msg");
     if (msgValue.isString())
     {
-        emit sigMessageRecv(msgValue.toString());
+        return msgValue.toString();
     }
+    return QString();
 }
 

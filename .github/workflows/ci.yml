@@ -44,7 +44,12 @@ jobs:
         run: cmake --build .
         working-directory: client/build
 
-      # Step 7: Upload client build artifacts
+      # Step 7: Run test
+      - name: Run test
+        run: ./sw-client-tester.exe
+        working-directory: client/build
+
+      # Step 8: Upload client build artifacts
       - name: Upload Client build artifact
         uses: actions/upload-artifact@v4
         with:

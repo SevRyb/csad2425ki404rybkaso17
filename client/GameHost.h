@@ -23,6 +23,7 @@ public:
     virtual ~GameHost();
 
     void reqMessage(const QString &msg);
+    QString parseJson(const QJsonObject &jsonObj);
 
 signals:
     void sigMessageRecv(QString msg);
@@ -32,7 +33,7 @@ private slots:
 
 private:
     bool detectHostSerialPort();
-    void parseJson(const QJsonObject &jsonObj);
+
     /* Serial Port */
     QSerialPort m_serialPort;
 };

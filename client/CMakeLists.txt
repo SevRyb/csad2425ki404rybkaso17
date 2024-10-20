@@ -2,6 +2,14 @@ cmake_minimum_required(VERSION 3.16)
 
 project(sw-client VERSION 0.1 LANGUAGES CXX)
 
+
+# Set path to our custom CMAKE scripts
+#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
+
+# Include Qt deployment helper function
+#include(windeployqt)
+
+
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -13,6 +21,11 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS SerialPort REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS SerialPort REQUIRED)
+
+
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Test REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Test REQUIRED)
+
 
 set(PROJECT_SOURCES
     Main.cpp
@@ -49,6 +62,8 @@ endif()
 target_link_libraries(sw-client PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::SerialPort)
 
+# target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Test)
+
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
@@ -63,6 +78,7 @@ set_target_properties(sw-client PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
+
 include(GNUInstallDirs)
 install(TARGETS sw-client
     BUNDLE DESTINATION .
@@ -70,6 +86,38 @@ install(TARGETS sw-client
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
+
+
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(sw-client)
 endif()
+
+
+#windeployqt(sw-client)
+
+
+# ---------------------------------------
+# ---------------- Tests ----------------
+# ---------------------------------------
+
+set(TEST_TARGET sw-client-tester)
+
+# Add test sources
+add_executable(${TEST_TARGET}
+    tests/UTSwClient.cpp
+)
+
+target_sources(${TEST_TARGET} PRIVATE
+    GameHost.cpp
+    GameHost.h
+    Singleton.h
+)
+
+# Link the Qt5::Test library to the test executable
+target_link_libraries(${TEST_TARGET} Qt5::Test Qt5::Core Qt5::Widgets Qt5::SerialPort)
+
+# Enable testing
+enable_testing()
+
+# Define a test
+add_test(NAME ${TEST_TARGET} COMMAND ${TEST_TARGET})
