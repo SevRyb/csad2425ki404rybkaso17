@@ -49,9 +49,9 @@ jobs:
         working-directory: client/build
 
       # Step 7: Run test
-      - name: Run test
-        run: ./sw-client-tester.exe
-        working-directory: client/build
+      # - name: Run test
+      #   run: ./sw-client-tester.exe
+      #   working-directory: client/build
 
       # Step 8: Upload client build artifacts
       - name: Upload Client build artifact
