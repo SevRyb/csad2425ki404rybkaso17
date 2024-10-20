@@ -23,37 +23,47 @@ jobs:
       - name: Install CMake
         uses: lukka/get-cmake@v3.21.2
 
-      # Step 3: Install Qt 5 on Windows
-      - name: Install Qt 5
+      # Step 3: Install Qt 5 and MinGW on Windows
+      - name: Install Qt 5 and MinGW
         run: |
           choco install qt5-default
-          echo "Qt 5 installed"
+          choco install mingw
+          echo "Qt 5 and MinGW installed"
 
-      # Step 3a: Add Qt to PATH
-      - name: Add Qt to PATH
-        run: $env:Path += ";C:\Qt\5.15.2\mingw81_64\bin"
+      # Step 4: Set up MinGW in the system path
+      - name: Add MinGW to PATH
+        run: |
+          echo "C:\Program Files\mingw-w64\mingw64\bin" >> $env:GITHUB_PATH
+        shell: pwsh
 
-      # Step 4: Create build directory
+      # Step 5: Create build directory
       - name: Create build directory
         run: mkdir build
         working-directory: client
 
-      # Step 5: Configure project using CMake
-      - name: Configure with CMake
+      # Step 6: Configure project using CMake with MinGW
+      - name: Configure with CMake for MinGW
         run: cmake -G "MinGW Makefiles" ..
         working-directory: client/build
 
-      # Step 6: Build the project
+      # Step 7: Build the project using MinGW
       - name: Build client app
         run: cmake --build .
         working-directory: client/build
 
-      # Step 7: Run test
-      # - name: Run test
-      #   run: ./sw-client-tester.exe
-      #   working-directory: client/build
+      # Step 8: Use windeployqt to gather Qt DLLs for MinGW
+      - name: Deploy Qt DLLs using windeployqt (MinGW)
+        run: |
+          C:\Qt\5.x.x\mingw81_64\bin\windeployqt.exe --release --compiler-runtime client/build/my_client.exe
+        shell: cmd
+        working-directory: client/build
 
-      # Step 8: Upload client build artifacts
+      # Step 9: Run tests (assuming tests are defined in CMakeLists.txt)
+      - name: Run tests
+        run: ctest --output-on-failure --config Release
+        working-directory: client/build
+
+      # Step 10: Upload client build artifacts, including DLLs
       - name: Upload Client build artifact
         uses: actions/upload-artifact@v4
         with:
