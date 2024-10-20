@@ -40,6 +40,13 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/client/build
 
+    - name: Upload Client build artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: client-build-windows
+        path: ${{github.workspace}}/client/build
+
 
   # Job for building the PlatformIO server project
   # server-build:
