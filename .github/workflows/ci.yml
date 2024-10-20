@@ -7,56 +7,38 @@ on:
   pull_request:
     branches:
       - '*'
-  workflow_dispatch:
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Debug
 
 jobs:
-  # Job for building the C++ Qt 5 client project on Linux
-  client-build-linux:
-    runs-on: ubuntu-latest
+  build:
+    # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
+    # You can convert this to a matrix build if you need cross-platform coverage.
+    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+    runs-on: windows-latest
 
     steps:
-      # Step 1: Checkout the repository
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - uses: actions/checkout@v3
 
-      # Step 2: Install dependencies (Qt5 and CMake)
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools build-essential cmake
+    - name: Install Qt
+      # Installs the Qt SDK
+      uses: jurplel/install-qt-action@v2
+      with:
+        version: '5.15.2'
+        host: 'windows'
+        target: 'desktop'
+        arch: 'win64_msvc2019_64'
 
-      # Step 3: Create build directory
-      - name: Create build directory
-        run: |
-          ls
-          mkdir build
-        working-directory: sw-client
+    - name: Configure CMake
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
-      # Step 4: Configure project using CMake
-      - name: Configure with CMake
-        run: cmake -G "Unix Makefiles" ..
-        working-directory: sw-client/build
-
-      # Step 5: Build the project
-      - name: Build client app
-        run: cmake --build .
-        working-directory: sw-client/build
-
-      # Step 6: Package the application (optional - using linuxdeployqt)
-      - name: Package with linuxdeployqt (optional)
-        run: |
-          wget -c https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
-          chmod +x linuxdeployqt-continuous-x86_64.AppImage
-          ./linuxdeployqt-continuous-x86_64.AppImage sw-client/build/sw-client -appimage
-        shell: bash
-
-      # Step 7: Upload client build artifacts
-      - name: Upload Client build artifact
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: client-build-linux
-          path: sw-client/build/sw-client
+    - name: Build
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
 
   # Job for building the PlatformIO server project
