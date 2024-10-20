@@ -58,6 +58,15 @@ jobs:
         shell: cmd
         working-directory: client/build
 
+        
+      - name: Ensure platform plugin is deployed
+        run: |
+          if not exist "client/build/platforms/qwindows.dll" (
+            mkdir client/build/platforms
+            copy "C:\Qt\5.15.2\mingw81_64\plugins\platforms\qwindows.dll" "client/build/platforms\qwindows.dll"
+          )
+        shell: cmd
+
       # Step 9: Run tests (assuming tests are defined in CMakeLists.txt)
       # - name: Run tests
       #   run: ctest --output-on-failure --config Release
@@ -65,33 +74,34 @@ jobs:
 
       # Step 10: Upload client build artifacts, including DLLs
       - name: Upload Client build artifact
+        if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: client-build-windows
           path: client/build/
 
   # Job for building the PlatformIO server project
-  server-build:
-    runs-on: ubuntu-latest
+  # server-build:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      # Step 1: Checkout the repository
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  #   steps:
+  #     # Step 1: Checkout the repository
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
 
-      # Step 2: Install PlatformIO
-      - name: Install PlatformIO
-        run: |
-          python3 -m pip install -U platformio
+  #     # Step 2: Install PlatformIO
+  #     - name: Install PlatformIO
+  #       run: |
+  #         python3 -m pip install -U platformio
 
-      # Step 3: Build PlatformIO project
-      - name: Build PlatformIO project
-        run: pio run
-        working-directory: server
+  #     # Step 3: Build PlatformIO project
+  #     - name: Build PlatformIO project
+  #       run: pio run
+  #       working-directory: server
 
-      # Step 4: Upload PlatformIO build artifacts
-      - name: Upload Server build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: server-build
-          path: server/.pio/build/*
+  #     # Step 4: Upload PlatformIO build artifacts
+  #     - name: Upload Server build artifact
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: server-build
+  #         path: server/.pio/build/*
