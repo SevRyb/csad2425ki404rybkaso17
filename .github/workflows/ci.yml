@@ -38,7 +38,7 @@ jobs:
 
     - name: Build
       # Build your program with the given configuration
-      run: cmake ${{github.workspace}}/client --build ${{github.workspace}}/client/build
+      run: cmake --build ${{github.workspace}}/client/build
 
 
   # Job for building the PlatformIO server project
