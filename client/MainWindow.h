@@ -2,9 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QLineEdit>
-#include <QPushButton>
+#include <QStackedLayout>
 #include <QVBoxLayout>
+#include <QPushButton>
+
+#include "GameBoard.h"
+#include "GameHost.h"
 
 class MainWindow : public QMainWindow
 {
@@ -15,13 +18,39 @@ public:
     ~MainWindow();
 
 private slots:
-    void onMessageRecv(QString msg);
+    /* Main Menu */
+    void onNewBtn();
+    void onLoadBtn();
+    void onSaveBtn();
+    /* Play Mode Menu */
+    void onManVsAIBtn();
+    void onManVsManBtn();
+    void onAIVsAIBtn();
+    /* Back to Main Menu */
+    void onMainMenu();
+    /* Responses from server */
+    void onGameStart(PlayMode mode);
+    void onGameOver(int winner);
+    void onLoadGame(const QString &cells);
 
 private:
     QWidget *m_rootWidget;
-    QVBoxLayout *m_rootLay;
-    QLineEdit *m_sendMsgEdit;
-    QPushButton *m_sendBtn;
-    QLineEdit *m_recvMsgEdit;
+    QStackedLayout *m_rootLay;
+
+    GameBoard *m_gameBoard;
+
+    /* Main Menu */
+    QWidget *m_mainMenuWidget;
+    QVBoxLayout *m_mainMenuLay;
+    QPushButton *m_newBtn;
+    QPushButton *m_loadBtn;
+    QPushButton *m_saveBtn;
+    /* Play Mode Menu */
+    QWidget *m_playModeMenuWidget;
+    QVBoxLayout *m_playModeMenuLay;
+    QPushButton *m_manVsAIBtn;
+    QPushButton *m_manVsManBtn;
+    QPushButton *m_AIVsAIBtn;
+
 };
 #endif // MAINWINDOW_H
