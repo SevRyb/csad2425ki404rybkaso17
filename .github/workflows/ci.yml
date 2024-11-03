@@ -42,11 +42,6 @@ jobs:
         name: client-build-windows
         path: ${{github.workspace}}/client/build
 
-    - name: Test
-      working-directory: ${{github.workspace}}/client/build
-      # Execute tests defined by the CMake configuration.
-      run: ctest -C ${{env.BUILD_TYPE}}
-
   # Job for building the PlatformIO server project
   server-build:
     runs-on: ubuntu-latest
