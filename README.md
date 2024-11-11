@@ -25,3 +25,6 @@ Main goals to this task is to create repository with main branch **develop**. Th
 
 ### Communication
 - **Serial Communication**: The microcontroller will communicate with desktop client app through an UART interface to send game status and receive user input.
+
+### How to build
+To build client and server run build.bat. Built binaries you can find in deploy directory.

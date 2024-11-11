@@ -14,6 +14,9 @@
 #include "Singleton.h"
 
 
+enum class PlayMode {Man_AI, Man_Man, AI_AI};
+enum class JsonType {Test = -1, New_Game, Player_Choice, Game_Over, Load_Game, Save_Game};
+
 
 class GameHost : public QObject
 {
@@ -22,20 +25,34 @@ public:
     explicit GameHost(QObject *parent = nullptr);
     virtual ~GameHost();
 
-    void reqMessage(const QString &msg);
-    QString parseJson(const QJsonObject &jsonObj);
+    void reqNewGame(PlayMode mode);
+    void reqSaveGame();
+    void reqLoadGame();
+    void reqPlayerChoice(int cellId);
+
+    void reqTestConnection(int magickNumber);
+
 
 signals:
-    void sigMessageRecv(QString msg);
+    void sigGameStart(PlayMode mode);
+    void sigPlayerChoice(int cellId, unsigned char cellState);
+    void sigGameOver(int winner);
+    void sigLoadGame(const QString &boardCells);
+
+    void sigTestConnection(int magickNumber, const QString &guiPurpose);
 
 private slots:
     void onReadyRead();
 
 private:
     bool detectHostSerialPort();
-
+    void parseJson(const QJsonObject &jsonObj);
     /* Serial Port */
     QSerialPort m_serialPort;
+    QByteArray m_inBuffer;
+    int m_magickNumber;
+    int m_recvMagickNumber;
+    QString m_guiPurpose;
 };
 
 typedef Singleton<GameHost> g_GameHost;
