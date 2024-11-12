@@ -6,11 +6,22 @@
 #include "Communicator.h"
 #include "Timer.h"
 
-
+/**
+ * @brief The global instance of the Communicator class
+ */
 Communicator* g_Communicator;
+/**
+ * @brief The global instance of the Game class
+ */
 Game* g_Game;
+/**
+ * @brief The global instance of the Timer class
+ */
 Timer* g_Timer;
 
+/**
+ * @brief The setup function, which is called once at the start of the program
+ */
 void setup() 
 {
 	g_Timer = new Timer;
@@ -26,6 +37,9 @@ void setup()
 	
 }
 
+/**
+ * @brief The main loop function, which is called repeatedly
+ */
 void loop() 
 {
 	g_Communicator->handleSerialData();
