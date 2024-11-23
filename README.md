@@ -28,3 +28,6 @@ Main goals to this task is to create repository with main branch **develop**. Th
 
 ### How to build
 To build client and server run build.bat. Built binaries you can find in deploy directory.
+
+### Testing
+All implemented test cases are in UTSwClient.cpp file. Tests cover all major use cases. To conveniently view test results use Qt Creator.

@@ -27,7 +27,6 @@ GameBoard::GameBoard(QWidget *parent)
         }
     }
 
-
     /* CONNECTIONS */
     connect(g_GameHost::Instance(), &GameHost::sigPlayerChoice, this, &GameBoard::onPlayerChoice);
 }

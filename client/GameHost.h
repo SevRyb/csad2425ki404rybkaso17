@@ -57,6 +57,15 @@ public:
      * @param magickNumber The magic number to be used for the test
      */
     void reqTestConnection(int magickNumber);
+    /**
+     * @brief Checks if serial port is opened
+     * @return Returns True if yes
+     */
+    bool isSerialPortOpen();
+    /**
+     * @brief Closes opened serial port
+     */
+    void closeSerialPort();
 
 
 signals:
@@ -70,7 +79,7 @@ signals:
      * @param cellId The identifier of the chosen cell
      * @param cellState The state of the chosen cell ('x', 'o', or ' ')
      */
-    void sigPlayerChoice(int cellId, unsigned char cellState);
+    void sigPlayerChoice(int cellId, char cellState);
     /**
      * @brief Emitted when the game is over
      * @param winner The index of the winning player (0 for 'x', 1 for 'o', 2 for draw)
@@ -105,6 +114,7 @@ private:
      * @param jsonObj The JSON object to be parsed
      */
     void parseJson(const QJsonObject &jsonObj);
+
     /* Serial Port */
     QSerialPort m_serialPort;
     QByteArray m_inBuffer;

@@ -100,7 +100,6 @@ void MainWindow::onNewBtn()
 void MainWindow::onLoadBtn()
 {
     g_GameHost::Instance()->reqLoadGame();
-    //m_rootLay->setCurrentIndex(2);
 }
 
 void MainWindow::onSaveBtn()
@@ -112,19 +111,16 @@ void MainWindow::onSaveBtn()
 void MainWindow::onManVsAIBtn()
 {
     g_GameHost::Instance()->reqNewGame(PlayMode::Man_AI);
-    //m_rootLay->setCurrentIndex(2);
 }
 
 void MainWindow::onManVsManBtn()
 {
     g_GameHost::Instance()->reqNewGame(PlayMode::Man_Man);
-    //m_rootLay->setCurrentIndex(2);
 }
 
 void MainWindow::onAIVsAIBtn()
 {
     g_GameHost::Instance()->reqNewGame(PlayMode::AI_AI);
-    //m_rootLay->setCurrentIndex(2);
 }
 
 void MainWindow::onMainMenu()
@@ -162,3 +158,4 @@ void MainWindow::onLoadGame(const QString &cells)
     m_gameBoard->load(cells);
     m_rootLay->setCurrentIndex(2);
 }
+
