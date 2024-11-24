@@ -98,16 +98,26 @@ add_executable(${TEST_TARGET}
 )
 
 target_sources(${TEST_TARGET} PRIVATE
+    MainWindow.cpp
+    MainWindow.h
+    GameBoard.cpp
+    GameBoard.h
+    GameButton.cpp
+    GameButton.h
     GameHost.cpp
     GameHost.h
     Singleton.h
 )
 
+target_compile_definitions(${TEST_TARGET} PRIVATE -DUNDER_TESTING)
+
 # Link the Qt5::Test library to the test executable
-target_link_libraries(${TEST_TARGET} Qt5::Test Qt5::Core Qt5::Widgets Qt5::SerialPort)
+target_link_libraries(${TEST_TARGET} Qt5::Test Qt5::Core Qt5::Widgets Qt5::SerialPort Qt5::Svg)
 
 # Enable testing
 enable_testing()
 
 # Define a test
 add_test(NAME ${TEST_TARGET} COMMAND ${TEST_TARGET})
+
+#add_definitions(-DUNDER_TESTING)

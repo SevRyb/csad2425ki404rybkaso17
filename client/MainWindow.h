@@ -9,6 +9,14 @@
 #include "GameBoard.h"
 #include "GameHost.h"
 
+
+//#ifdef UNDER_TESTING
+//#define PRIVATE_TESTABLE public
+//#else
+//#define PRIVATE_TESTABLE private
+//#endif
+
+
 /**
  * @class MainWindow
  * @brief The main window of the application
@@ -28,7 +36,23 @@ public:
      */
     ~MainWindow();
 
+#ifdef UNDER_TESTING
+    /**
+     * @brief Returns current page index
+     * @return Current page index
+     */
+    int currentPageIndex()
+    {
+        return m_rootLay->currentIndex();
+    };
+#endif
+
+#ifndef UNDER_TESTING
 private slots:
+#else
+public slots:
+#endif
+
     /* Main Menu */
     /**
      * @brief Handles the "New" button click

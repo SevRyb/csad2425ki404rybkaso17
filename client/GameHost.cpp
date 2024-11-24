@@ -28,7 +28,10 @@ GameHost::GameHost(QObject *parent)
     connect(&m_serialPort, &QSerialPort::readyRead, this, &GameHost::onReadyRead);
 }
 
-GameHost::~GameHost() {}
+GameHost::~GameHost()
+{
+    closeSerialPort();
+}
 
 bool GameHost::detectHostSerialPort()
 {
@@ -90,6 +93,16 @@ void GameHost::reqTestConnection(int magickNumber)
     request["mn"] = magickNumber;
     const QByteArray data = QJsonDocument(request).toJson(QJsonDocument::Compact);
     m_serialPort.write(data);
+}
+
+bool GameHost::isSerialPortOpen()
+{
+    return m_serialPort.isOpen();
+}
+
+void GameHost::closeSerialPort()
+{
+    m_serialPort.close();
 }
 
 void GameHost::onReadyRead()
